@@ -1,0 +1,4 @@
+rootProject.name = 'event-listener-api'
+
+include("persistence:mongodb")
+include("api")

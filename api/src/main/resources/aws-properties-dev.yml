@@ -1,0 +1,33 @@
+cloud:
+  aws:
+    credentials:
+      profile-name: ${aws.default.profile:dev}
+      instanceProfile: true
+    stack:
+      auto: ${management.aws.stack.auto:false}
+    s3:
+      bucket: ${management.aws.s3.bucket:bithumb-bs-dev-lrc-bucket}
+    region:
+      static: ${management.aws.region:ap-northeast-2}
+      auto: ${management.aws.region.auto:false}
+    ssm:
+      endpoint: https://vpce-070145c4242d28466-s63o0xw2.ssm.ap-northeast-2.vpce.amazonaws.com
+    ses:
+      endpoint: vpce-0bf60f241bc6a2e72-qojbj6s0.email-smtp.ap-northeast-2.vpce.amazonaws.com
+      port: 2587
+    kms:
+      endpoint: https://vpce-0d2252033d361bfff-fzm8y5uq.kms.ap-northeast-2.vpce.amazonaws.com
+    param-store:
+      enabled: true
+      fail-fast: true
+      prefix: /smartadmin
+      doc-name: docdb
+      kms-name: kms
+      message-name: message
+      crypto-name: crypto
+      auth-name: auth
+      salt-name: salt
+      iv-name: iv
+    sqs:
+      bucketav-queue-name: bs-bucketav_result_dev.fifo
+      endpoint: https://sqs.ap-northeast-2.amazonaws.com/257160057157/bs-bucketav_result_dev.fifo

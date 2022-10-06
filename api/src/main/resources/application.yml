@@ -1,0 +1,141 @@
+server:
+  shutdown: graceful
+  port: ${event.listener.server.port:8080}
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  devtools:
+    restart:
+      enabled: false
+  data:
+    mongodb:
+      auto-index-creation: true
+      uuid-representation: standard
+      field-naming-strategy: org.springframework.data.mapping.model.SnakeCaseFieldNamingStrategy
+  pid:
+    file: ${instance.pid}
+
+application:
+  version: /v1
+  prefix: /api
+  route: /mng
+  exclude-prefix-path: springdoc
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: metrics, prometheus, health
+
+logging:
+  level:
+    root: ${management.api.logging.level.root:DEBUG}
+    org.springframework.data.convert.CustomConversions: ERROR
+    org:
+      springframework:
+        data:
+          mongodb:
+            core:
+              MongoTemplate: ${management.api.logging.level.mongo:DEBUG}
+    io:
+      spring:
+        cloud: INFO
+  config: classpath:logback-spring-${spring.profiles.active}.xml
+
+---
+spring:
+  config:
+    import: classpath:aws-properties.yml, classpath:springdoc.yml
+    activate:
+      on-profile: local
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: ${smartadmin.mongodb:test}
+mail:
+  logo-url: http://localhost:3000/images/maillogo.png
+  login-url: http://localhost:3000/
+application:
+  role-type: ADMIN
+  site-id: 62a15f4ae4129b518b133127
+logging:
+  config: classpath:logback-spring-${spring.profiles.active}.xml
+---
+spring:
+  config:
+    import: classpath:aws-properties.yml, classpath:springdoc.yml
+    activate:
+      on-profile: default
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: test
+mail:
+  logo-url: http://localhost:3000/images/maillogo.png
+  login-url: http://localhost:3000/
+logging:
+  config: classpath:logback-spring-local.xml
+application:
+  role-type: ADMIN
+  site-id: 62a15f4ae4129b518b133127
+---
+spring:
+  config:
+    import: classpath:aws-properties-dev.yml, classpath:springdoc.yml
+    activate:
+      on-profile: dev
+mail:
+  logo-url: http://k8s-systemsd-lrcappwe-3ba5072e02-1786558476.ap-northeast-2.elb.amazonaws.com/images/maillogo.png
+  login-url: http://k8s-systemsd-lrcappwe-3ba5072e02-1786558476.ap-northeast-2.elb.amazonaws.com/
+logging:
+  config: classpath:logback-spring-${spring.profiles.active}.xml
+application:
+  role-type: ADMIN
+  site-id: 62a15f4ae4129b518b133127
+---
+spring:
+  config:
+    import: classpath:aws-properties-eks-dev.yml, classpath:springdoc.yml
+    activate:
+      on-profile: eks-dev
+mail:
+  logo-url: http://k8s-systemsd-lrcappwe-3ba5072e02-1786558476.ap-northeast-2.elb.amazonaws.com/images/maillogo.png
+  login-url: http://k8s-systemsd-lrcappwe-3ba5072e02-1786558476.ap-northeast-2.elb.amazonaws.com/
+logging:
+  config: classpath:logback-spring-${spring.profiles.active}.xml
+application:
+  role-type: ADMIN
+  site-id: 62a15f4ae4129b518b133127
+---
+spring:
+  config:
+    import: classpath:aws-properties-qa.yml, classpath:springdoc.yml
+    activate:
+      on-profile: qa
+mail:
+  logo-url: http://k8s-systemsd-lrcappwe-3ba5072e02-1786558476.ap-northeast-2.elb.amazonaws.com/images/maillogo.png
+  login-url: http://k8s-systemsd-lrcappwe-3ba5072e02-1786558476.ap-northeast-2.elb.amazonaws.com/
+logging:
+  config: classpath:logback-spring-${spring.profiles.active}.xml
+application:
+  role-type: ADMIN
+  site-id: 62a15f4ae4129b518b133127
+---
+spring:
+  config:
+    import: classpath:aws-properties.yml
+    activate:
+      on-profile: prod
+mail:
+  logo-url: https://listing.bithumb.com/images/maillogo.png
+  login-url: https://listing.bithumb.com/
+springdoc:
+  api-docs:
+    enabled: false
+logging:
+  config: classpath:logback-spring-${spring.profiles.active}.xml
+application:
+  role-type: ADMIN
+  site-id: 62a15f4ae4129b518b133127
