@@ -45,6 +45,8 @@ public class AwsProperties {
   private String kmsEndPoint;
   @Value("${cloud.aws.sqs.endpoint}")
   private String sqsEndPoint;
+  @Value("${cloud.aws.sqs.bucketav-queue-name}")
+  private String sqsQueueName;
 
   private String kmsKey;
   private String saltKey;
