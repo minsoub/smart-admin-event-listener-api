@@ -55,7 +55,6 @@ public class ParameterStoreConfig {
         this.awsProperties.setEmailSender(getParameterValue(awsProperties.getParamStoreMessageName(), ParameterStoreConstant.MAIL_SENDER));
         this.awsProperties.setSmtpUserName(getParameterValue(awsProperties.getParamStoreMessageName(), ParameterStoreConstant.SMTP_USERNAME).trim());
         this.awsProperties.setSmtpUserPassword(getParameterValue(awsProperties.getParamStoreMessageName(), ParameterStoreConstant.SMTP_PASSWORD).trim());
-        this.awsProperties.setSqsBucketavUrl(getParameterValue(awsProperties.getParamStoreMessageName(), ParameterStoreConstant.SQS_BUCKETAV_URL)); // ADD
         this.awsProperties.setJwtSecretKey(getParameterValue(awsProperties.getParamStoreAuthName(), ParameterStoreConstant.JWT_SECRET_KEY));
         this.awsProperties.setCryptoKey(getParameterValue(awsProperties.getParamCryptoName(), ParameterStoreConstant.CRYPTO_KEY));
     }
