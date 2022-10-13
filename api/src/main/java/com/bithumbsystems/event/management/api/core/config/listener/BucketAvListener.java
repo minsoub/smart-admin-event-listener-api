@@ -1,9 +1,9 @@
 package com.bithumbsystems.event.management.api.core.config.listener;
 
-import com.amazonaws.services.s3.model.GetObjectTaggingResult;
 import com.bithumbsystems.event.management.api.core.model.request.BucketUploadRequest;
 import com.bithumbsystems.persistence.mongodb.chat.model.enums.FileStatus;
 import com.bithumbsystems.persistence.mongodb.chat.service.ChatDomainService;
+import com.bithumbsystems.persistence.mongodb.document.service.DocumentDomainService;
 import com.bithumbsystems.persistence.mongodb.lrcmanagment.project.reviewestimate.service.ReviewEstimateDomainService;
 import com.google.gson.Gson;
 import io.awspring.cloud.messaging.listener.SqsMessageDeletionPolicy;
@@ -13,20 +13,20 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import software.amazon.awssdk.services.s3.S3AsyncClient;
 import software.amazon.awssdk.services.s3.model.GetObjectTaggingRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectTaggingResponse;
 import software.amazon.awssdk.services.s3.model.Tag;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @Component
 @Slf4j
@@ -36,6 +36,7 @@ public class BucketAvListener {
     private final S3AsyncClient s3AsyncClient;
     private final ReviewEstimateDomainService reviewEstimateDomainService;
     private final ChatDomainService chatDomainService;
+    private final DocumentDomainService documentDomainService;
 
     /**
      * S3 Bucket에 Upload 후 호출되는 SQS Receiver Method
@@ -129,6 +130,17 @@ public class BucketAvListener {
                         else if (value.toUpperCase().equals("NO")) fileStatus = FileStatus.NO;
                         result.setFileStatus(fileStatus);
                         return chatDomainService.save(result);
+                    })
+                    .publishOn(Schedulers.boundedElastic()).subscribe();
+        } else if (bucketUploadRequest.getTableName().toLowerCase().equals("lrc_project_submitted_document_file")) {
+            documentDomainService.findByDocFileId(bucketUploadRequest.getFileKey())
+                    .flatMap(result -> {
+                        FileStatus fileStatus = null;
+                        if (value.toUpperCase().equals("CLEAN")) fileStatus = FileStatus.CLEAN;
+                        else if (value.toUpperCase().equals("INFECTED")) fileStatus = FileStatus.INFECTED;
+                        else if (value.toUpperCase().equals("NO")) fileStatus = FileStatus.NO;
+                        result.setFileStatus(fileStatus);
+                        return documentDomainService.save(result);
                     })
                     .publishOn(Schedulers.boundedElastic()).subscribe();
         }
