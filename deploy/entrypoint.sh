@@ -14,4 +14,4 @@ export AWS_SECRET_ACCESS_KEY=$3
 echo $AWS_ACCESS_KEY_ID
 echo $AWS_SECRET_ACCESS_KEY
 
-java -Dspring.profiles.active=$1 -jar ./event-listener-api.jar
+java -Dspring.profiles.active=$1 -jar ./smart-admin-event-listener-api.jar

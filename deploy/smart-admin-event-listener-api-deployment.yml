@@ -14,7 +14,7 @@ spec:
   template:
     metadata:
       labels:
-        app: lrc-mng-api
+        app: smart-admin-event-listener-api
     spec:
       serviceAccount: fluentd
       serviceAccountName: fluentd
