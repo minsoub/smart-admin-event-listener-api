@@ -15,6 +15,7 @@ spec:
     metadata:
       labels:
         app: smart-admin-event-listener-api
+    spec:
       containers:
         - name: smart-admin-event-listener-api
           image: AWS_ECR_URI
