@@ -111,6 +111,20 @@ application:
 ---
 spring:
   config:
+    import: classpath:aws-properties-eks-prod.yml, classpath:springdoc.yml
+    activate:
+      on-profile: eks-prod
+mail:
+  logo-url: https://listing.bithumbsystems.com/images/maillogo.png
+  login-url: https://listing.bithumbsystems.com/
+logging:
+  config: classpath:logback-spring-${spring.profiles.active}.xml
+application:
+  role-type: ADMIN
+  site-id: 62a15f4ae4129b518b133127
+---
+spring:
+  config:
     import: classpath:aws-properties-qa.yml, classpath:springdoc.yml
     activate:
       on-profile: qa

@@ -23,7 +23,7 @@ import software.amazon.awssdk.services.s3.S3AsyncClient;
 @Getter
 @Setter
 @Configuration
-@Profile("dev|prod|eks-dev|qa")
+@Profile("dev|qa|prod|eks-dev|eks-prod")
 @RequiredArgsConstructor
 public class AwsConfig {
 
