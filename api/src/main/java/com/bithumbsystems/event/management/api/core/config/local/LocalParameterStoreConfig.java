@@ -18,7 +18,7 @@ import java.net.URI;
 
 @Log4j2
 @Data
-@Profile("local|default")
+@Profile("local|localstack|default")
 @Configuration
 public class LocalParameterStoreConfig {
 
